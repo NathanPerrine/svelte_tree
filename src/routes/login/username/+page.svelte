@@ -13,15 +13,17 @@
         loading = true;
         clearTimeout(debounceTimer)
 
-        debounceTimer = setTimeout(async () => {
-            console.log('Checking availability of ', username);
+        if(username?.length > 2 && username.length < 16 && re.test(username)){
+            debounceTimer = setTimeout(async () => {
+                console.log('Checking availability of ', username);
 
-            const ref = doc(db, "usernames", username);
-            const exists = await getDoc(ref).then((doc) => doc.exists());
+                const ref = doc(db, "usernames", username);
+                const exists = await getDoc(ref).then((doc) => doc.exists());
 
-            isAvailable = !exists;
-            loading = false;
-        }, 500);
+                isAvailable = !exists;
+                loading = false;
+            }, 500);
+        }
     }
 
     async function confirmUsername() {
@@ -48,6 +50,12 @@
         isAvailable = false;
     }
 
+    const re = /^(?=[a-zA-Z0-9._]{3,16}$)(?!.*[_.]{2})[^_.].*[^_.]$/;
+
+    $: isValid = username?.length > 2 && username.length < 16 && re.test(username);
+    $: isTouched = username.length > 0;
+    $: isTaken = isValid && !isAvailable && !loading;
+
 </script>
 
 <AuthCheck>
@@ -59,10 +67,25 @@
             class='input w-full'
             bind:value={username}
             on:input={checkAvailability}
-        />
+            class:input-error={(!isValid && isTouched)}
+            class:input-warning={isTaken}
+            class:input-success={isAvailable && isValid && !loading}
+            />
+            <!-- on:input={checkName} -->
+        {#if loading && isValid}
+            <p class="text-secondary">Checking availability of @{username}...</p>
+        {/if}
 
-        <p>Username available: {isAvailable}</p>
+        {#if !isValid && isTouched}
+            <p class="text-error text-sm">Must be 3-16 characters long, alphanumeric only.</p>
+        {/if}
 
-        <button class='btn btn-success normal-case'>Confirm username @{username}</button>
+        {#if isValid && !isAvailable && !loading}
+            <p class="text-warning text-sm my-2">@{username} is not available</p>
+        {/if}
+
+        {#if isAvailable && isValid}
+            <button class='btn btn-success normal-case my-2'>Confirm username @{username}</button>
+        {/if}
     </form>
 </AuthCheck>
