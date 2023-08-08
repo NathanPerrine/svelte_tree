@@ -64,14 +64,13 @@
         <input
             type='text'
             placeholder="Username"
-            class='input w-full'
+            class='input w-full my-3'
             bind:value={username}
             on:input={checkAvailability}
             class:input-error={(!isValid && isTouched)}
             class:input-warning={isTaken}
             class:input-success={isAvailable && isValid && !loading}
-            />
-            <!-- on:input={checkName} -->
+        />
         {#if loading && isValid}
             <p class="text-secondary">Checking availability of @{username}...</p>
         {/if}
