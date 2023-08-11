@@ -16,7 +16,7 @@
 
     const formData = writable(formDefaults);
 
-    let showForm = false;
+    let showForm = true;
 
     $: urlIsValid = $formData.url.match(/^((https?|ftp|smtp):\/\/)?(www.)?[a-z0-9]+\.[a-z]+(\/[a-zA-Z0-9#]+\/?)*$/);
     $: titleIsValid = $formData.title.length < 20 && $formData.title.length > 0;
@@ -68,30 +68,48 @@
             on:submit|preventDefault={addLink}
             class="bg-base-200 p-6 w-full mx-auto rounded-xl"
         >
-            <select
-            name="icon"
-            class="select select-sm"
-            bind:value={$formData.icon}
-            >
+            <div class="flex flex-col space-y-3 md:flex-row md:space-y-0 md:space-x-2">
+                    <select
+                    name="icon"
+                    class="select select-sm"
+                    bind:value={$formData.icon}
+                    >
 
-            {#each icons as icon}
-                <option value={icon.toLowerCase()}>{icon}</option>
-            {/each}
-            </select>
-            <input
-            name="title"
-            type="text"
-            placeholder="Title"
-            class="input input-sm"
-            bind:value={$formData.title}
-            />
-            <input
-            name="url"
-            type="text"
-            placeholder="URL"
-            class="input input-sm"
-            bind:value={$formData.url}
-            />
+                    {#each icons as icon}
+                        <option value={icon.toLowerCase()}>{icon}</option>
+                    {/each}
+                    </select>
+
+                    <input
+                    name="title"
+                    type="text"
+                    placeholder="Title"
+                    class="input input-sm"
+                    bind:value={$formData.title}
+                    />
+
+                    <input
+                    name="url"
+                    type="text"
+                    placeholder="URL"
+                    class="input input-sm"
+                    bind:value={$formData.url}
+                    />
+                    <label for="url" class="label justify-end">
+                        <div class="group relative w-max">
+                            <MingcuteInformationLine class='text-info cursor-pointer'/>
+                            <span class="pointer-events-none  opacity-0 transition-opacity group-hover:opacity-100">
+                                <div class="pointer-events-none  absolute -top-7 left-0 w-max shadow-lg bg-base-200 border-solid border-2 border-amber-200 p-4 rounded">
+<!-- transition duration-150 ease-in-out left-0 ml-8 -->
+                                    <p>This is a button.</p>
+                                    <p>This is a button.</p>
+                                    <p>This is a button.</p>
+                                </div>
+
+                            </span>
+                            </div>
+                    </label>
+            </div>
             <div class="my-4">
                 <MingcuteInformationLine class='text-info'/>
                 {#if formIsValid}
