@@ -98,9 +98,8 @@
                     <label for="url" class="label justify-end">
                         <div class="group relative w-max">
                             <MingcuteInformationLine class='text-info cursor-pointer'/>
-                            <span class="pointer-events-none  opacity-0 transition-opacity group-hover:opacity-100">
-                                <div class="pointer-events-none  absolute -top-7 left-0 w-max shadow-lg bg-base-200 border-solid border-2 border-amber-200 p-4 rounded">
-<!-- transition duration-150 ease-in-out left-0 ml-8 -->
+                            <span class="pointer-events-none opacity-0 transition-opacity group-hover:opacity-100">
+                                <div class="pointer-events-none  absolute -top-10 -left-40 w-max shadow-lg bg-base-200 border-solid border-2 border-amber-200 p-4 rounded">
                                     <p>This is a button.</p>
                                     <p>This is a button.</p>
                                     <p>This is a button.</p>
