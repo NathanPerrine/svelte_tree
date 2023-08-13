@@ -18,7 +18,7 @@
 
     let showForm = true;
 
-    $: urlIsValid = $formData.url.match(/^((https?|ftp|smtp):\/\/)?(www.)?[a-z0-9]+\.[a-z]+(\/[a-zA-Z0-9#]+\/?)*$/);
+    $: urlIsValid = $formData.url.match(/^((https?|ftp|smtp):\/\/)?(www.)?([\w].?)+\.[a-z]+(\/[a-zA-Z0-9#?=]+\/?)*$/);
     $: titleIsValid = $formData.title.length < 20 && $formData.title.length > 0;
     $: formIsValid = urlIsValid && titleIsValid;
 
@@ -97,12 +97,18 @@
                     />
                     <label for="url" class="label justify-end">
                         <div class="group relative w-max">
-                            <MingcuteInformationLine class='text-info cursor-pointer'/>
+                            <span class='text-info' class:text-success={urlIsValid}>
+                                <MingcuteInformationLine class=' cursor-pointer' />
+                            </span>
                             <span class="pointer-events-none opacity-0 transition-opacity group-hover:opacity-100">
-                                <div class="pointer-events-none  absolute -top-10 -left-40 w-max shadow-lg bg-base-200 border-solid border-2 border-amber-200 p-4 rounded">
-                                    <p>This is a button.</p>
-                                    <p>This is a button.</p>
-                                    <p>This is a button.</p>
+                                <div class="text-xs absolute -top-10 -left-52 w-max bg-base-200 border-solid border-2 border-info p-4 rounded" class:border-success={urlIsValid}>
+                                    <p>URLs must follow the following rules:</p>
+                                    <p>Start with 'http://' or 'https://'</p>
+                                    <p>May include 'www.'</p>
+                                    <p>May have a subdomain</p>
+                                    <p>Must have a second-level domain</p>
+                                    <p>May include a subdomain</p>
+                                    <p>May include a subdirectory</p>
                                 </div>
 
                             </span>
@@ -110,13 +116,15 @@
                     </label>
             </div>
             <div class="my-4">
-                <MingcuteInformationLine class='text-info'/>
-                {#if formIsValid}
-                    <p class="text-success text-xs">Looks good!</p>
-                {:else}
-                    <p class="text-info text-xs" class:text-success={titleIsValid}> Titles must be between 1 and 20 characters.</p>
-                    <p class="text-info text-xs" class:text-success={urlIsValid}>URL must start with http(s) and follow the format https://www.google.com</p>
-                {/if}
+                <div class="swap" class:swap-active={formIsValid}>
+                    <div class="swap-on">
+                        <p class="text-success text-xs">Looks good!</p>
+                    </div>
+                    <div class="swap-off">
+                        <p class="text-info text-xs" class:text-success={titleIsValid}> Titles must be between 1 and 20 characters.</p>
+                        <p class="text-info text-xs" class:text-success={urlIsValid}>URL must start with http(s) and follow the format https://www.google.com</p>
+                    </div>
+                </div>
             </div>
 
             <button
