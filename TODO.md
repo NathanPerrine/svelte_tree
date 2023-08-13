@@ -4,3 +4,5 @@
 
 * check / x icon before adding a link in profile
 * tooltip icon for url validation rules
+
+* email / contact links?

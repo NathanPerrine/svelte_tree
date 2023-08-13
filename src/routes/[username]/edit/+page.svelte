@@ -100,8 +100,8 @@
                             <span class='text-info' class:text-success={urlIsValid}>
                                 <MingcuteInformationLine class=' cursor-pointer' />
                             </span>
-                            <span class="pointer-events-none opacity-0 transition-opacity group-hover:opacity-100">
-                                <div class="text-xs absolute -top-10 -left-52 w-max bg-base-200 border-solid border-2 border-info p-4 rounded" class:border-success={urlIsValid}>
+                            <span class="pointer-events-none opacity-0 group-hover:opacity-100">
+                                <div class="text-xs absolute -top-10 -left-52 z-10 w-max bg-base-200 border-solid border-2 border-info p-4 rounded" class:border-success={urlIsValid}>
                                     <p>URLs must follow the following rules:</p>
                                     <p>Start with 'http://' or 'https://'</p>
                                     <p>May include 'www.'</p>
