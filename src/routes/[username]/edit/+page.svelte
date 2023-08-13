@@ -116,7 +116,7 @@
                     </label>
             </div>
             <div class="my-4">
-                <div class="swap" class:swap-active={formIsValid}>
+                <div class="swap cursor-default" class:swap-active={formIsValid}>
                     <div class="swap-on">
                         <p class="text-success text-xs">Looks good!</p>
                     </div>
