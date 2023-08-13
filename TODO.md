@@ -5,4 +5,7 @@
 * check / x icon before adding a link in profile
 * tooltip icon for url validation rules
 
+# edit profile
+* edit links
 * email / contact links?
+* If list === old list don't update firebase
