@@ -7,5 +7,6 @@
 
 # edit profile
 * edit links
+    * link form into a component... add link / edit link
 * email / contact links?
 * If list === old list don't update firebase

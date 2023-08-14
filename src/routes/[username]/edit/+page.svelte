@@ -19,6 +19,7 @@
     const formData = writable(formDefaults);
 
     let showForm = false;
+    let showEdit = false;
 
     $: urlIsValid = $formData.url.match(/^((https?|ftp|smtp):\/\/)?(www.)?([\w].?)+\.[a-z]+(\/[a-zA-Z0-9#?=]+\/?)*$/);
     $: titleIsValid = $formData.title.length < 20 && $formData.title.length > 0;
@@ -33,20 +34,22 @@
     async function addLink(e: SubmitEvent) {
         const userRef = doc(db, "users", $user!.uid)
 
-        await updateDoc(userRef, {
-            links: arrayUnion({
-                ...$formData,
-                id: Date.now().toString(),
-            }),
-        });
+        if (formIsValid){
+            await updateDoc(userRef, {
+                links: arrayUnion({
+                    ...$formData,
+                    id: Date.now().toString(),
+                }),
+            });
 
-        formData.set({
-            icon: "custom",
-            title: "",
-            url: "https://",
-        });
+            formData.set({
+                icon: "custom",
+                title: "",
+                url: "https://",
+            });
 
-        showForm = false;
+            showForm = false;
+        }
     }
 
     async function deleteLink(item: any) {
@@ -70,9 +73,11 @@
         </h1>
 
         <SortableList list={$userData?.links} on:sort={sortList} let:item let:index>
+            {console.log(item), ''}
             <div class="group relative">
                 <UserLink {...item} />
                 <button on:click={() => deleteLink(item)} class="btn-xs btn-error invisible group-hover:visible transition-all absolute -right-6 bottom-10 rounded">Delete</button>
+                <button on:click={() => showEdit = true} class ="btn-xs btn-success invisible group-hover:visible transition-all absolute -left-6 bottom-10 rounded">Edit</button>
             </div>
         </SortableList>
 
@@ -155,6 +160,11 @@
         >
             Add a Link
         </button>
+        {/if}
+
+        {#if showEdit}
+            <p>Edit</p>
+            <button on:click={() => showEdit = false} class="btn btn-xs my-4">Cancel</button>
         {/if}
     {/if}
 </main>
