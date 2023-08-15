@@ -7,23 +7,24 @@
     import { arrayRemove, arrayUnion, doc, setDoc, updateDoc } from "firebase/firestore";
     import { writable } from "svelte/store";
     import MingcuteInformationLine from '~icons/mingcute/information-line'
+    import LinkForm from "$lib/components/LinkForm.svelte";
 
-    const icons = ["Twitter", "YouTube", "TikTok", "LinkedIn", "GitHub", "Custom"];
+    // const icons = ["Twitter", "YouTube", "TikTok", "LinkedIn", "GitHub", "Custom"];
 
-    const formDefaults = {
-        icon: "custom",
-        title: "",
-        url: "https://"
-    };
+    // const formDefaults = {
+    //     icon: "custom",
+    //     title: "",
+    //     url: "https://"
+    // };
 
-    const formData = writable(formDefaults);
+    // const formData = writable(formDefaults);
 
     let showForm = false;
     let showEdit = false;
 
-    $: urlIsValid = $formData.url.match(/^((https?|ftp|smtp):\/\/)?(www.)?([\w].?)+\.[a-z]+(\/[a-zA-Z0-9#?=]+\/?)*$/);
-    $: titleIsValid = $formData.title.length < 20 && $formData.title.length > 0;
-    $: formIsValid = urlIsValid && titleIsValid;
+    // $: urlIsValid = $formData.url.match(/^((https?|ftp|smtp):\/\/)?(www.)?([\w].?)+\.[a-z]+(\/[a-zA-Z0-9#?=]+\/?)*$/);
+    // $: titleIsValid = $formData.title.length < 20 && $formData.title.length > 0;
+    // $: formIsValid = urlIsValid && titleIsValid;
 
     function sortList(e: CustomEvent) {
         const newList = e.detail;
@@ -31,26 +32,26 @@
         setDoc(userRef, { links: newList }, { merge: true });
     }
 
-    async function addLink(e: SubmitEvent) {
-        const userRef = doc(db, "users", $user!.uid)
+    // async function addLink(e: SubmitEvent) {
+    //     const userRef = doc(db, "users", $user!.uid)
 
-        if (formIsValid){
-            await updateDoc(userRef, {
-                links: arrayUnion({
-                    ...$formData,
-                    id: Date.now().toString(),
-                }),
-            });
+    //     if (formIsValid){
+    //         await updateDoc(userRef, {
+    //             links: arrayUnion({
+    //                 ...$formData,
+    //                 id: Date.now().toString(),
+    //             }),
+    //         });
 
-            formData.set({
-                icon: "custom",
-                title: "",
-                url: "https://",
-            });
+    //         formData.set({
+    //             icon: "custom",
+    //             title: "",
+    //             url: "https://",
+    //         });
 
-            showForm = false;
-        }
-    }
+    //         showForm = false;
+    //     }
+    // }
 
     async function deleteLink(item: any) {
         const userRef = doc(db, "users", $user!.uid);
@@ -59,10 +60,10 @@
         });
     }
 
-    function cancelLink() {
-        formData.set(formDefaults);
-        showForm = false;
-    }
+    // function cancelLink() {
+    //     formData.set(formDefaults);
+    //     showForm = false;
+    // }
 
 </script>
 
@@ -73,7 +74,7 @@
         </h1>
 
         <SortableList list={$userData?.links} on:sort={sortList} let:item let:index>
-            {console.log(item), ''}
+            <!-- {console.log(item), ''} -->
             <div class="group relative">
                 <UserLink {...item} />
                 <button on:click={() => deleteLink(item)} class="btn-xs btn-error invisible group-hover:visible transition-all absolute -right-6 bottom-10 rounded">Delete</button>
@@ -82,7 +83,9 @@
         </SortableList>
 
         {#if showForm}
-        <form
+        <p class='text-sky-800'>Form goes here</p>
+        <LinkForm bind:showForm />
+        <!-- <form
             on:submit|preventDefault={addLink}
             class="bg-base-200 p-6 w-full mx-auto rounded-xl"
         >
@@ -152,7 +155,7 @@
             >
 
             <button type="button" class="btn btn-xs my-4" on:click={cancelLink}>Cancel</button>
-        </form>
+        </form> -->
         {:else}
         <button
             on:click={() => (showForm = true)}
