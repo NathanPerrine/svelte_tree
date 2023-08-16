@@ -7,12 +7,12 @@ import { writable, type Readable, derived } from 'svelte/store';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyAQENduPKuZCtsyJADP7FBbl6fFqV-nMKU",
-  authDomain: "sveltetree-e2035.firebaseapp.com",
-  projectId: "sveltetree-e2035",
-  storageBucket: "sveltetree-e2035.appspot.com",
-  messagingSenderId: "505320391446",
-  appId: "1:505320391446:web:ac4bbac04e234b2040c637"
+    apiKey: "AIzaSyAQENduPKuZCtsyJADP7FBbl6fFqV-nMKU",
+    authDomain: "sveltetree-e2035.firebaseapp.com",
+    projectId: "sveltetree-e2035",
+    storageBucket: "sveltetree-e2035.appspot.com",
+    messagingSenderId: "505320391446",
+    appId: "1:505320391446:web:ac4bbac04e234b2040c637"
 };
 
 // Initialize Firebase

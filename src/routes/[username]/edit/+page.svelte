@@ -19,8 +19,8 @@
 
     // const formData = writable(formDefaults);
 
-    let showForm = false;
-    let showEdit = false;
+    let showForm: string | boolean = false;
+    let editLinkItem: any = null
 
     // $: urlIsValid = $formData.url.match(/^((https?|ftp|smtp):\/\/)?(www.)?([\w].?)+\.[a-z]+(\/[a-zA-Z0-9#?=]+\/?)*$/);
     // $: titleIsValid = $formData.title.length < 20 && $formData.title.length > 0;
@@ -53,6 +53,12 @@
     //     }
     // }
 
+    async function editLink(item: any) {
+        editLinkItem = item;
+        showForm = 'edit'
+        // console.log(item)
+    }
+
     async function deleteLink(item: any) {
         const userRef = doc(db, "users", $user!.uid);
         await updateDoc(userRef, {
@@ -78,12 +84,12 @@
             <div class="group relative">
                 <UserLink {...item} />
                 <button on:click={() => deleteLink(item)} class="btn-xs btn-error invisible group-hover:visible transition-all absolute -right-6 bottom-10 rounded">Delete</button>
-                <button on:click={() => showEdit = true} class ="btn-xs btn-success invisible group-hover:visible transition-all absolute -left-6 bottom-10 rounded">Edit</button>
+                <!-- <button on:click={() => showForm = 'edit'} class ="btn-xs btn-success invisible group-hover:visible transition-all absolute -left-6 bottom-10 rounded">Edit</button> -->
+                <button on:click={() => editLink(item)} class ="btn-xs btn-success invisible group-hover:visible transition-all absolute -left-6 bottom-10 rounded">Edit</button>
             </div>
         </SortableList>
 
-        {#if showForm}
-        <p class='text-sky-800'>Form goes here</p>
+        {#if showForm === 'addLink'}
         <LinkForm bind:showForm />
         <!-- <form
             on:submit|preventDefault={addLink}
@@ -157,17 +163,13 @@
             <button type="button" class="btn btn-xs my-4" on:click={cancelLink}>Cancel</button>
         </form> -->
         {:else}
-        <button
-            on:click={() => (showForm = true)}
-            class="btn btn-outline btn-info block mx-auto my-4"
-        >
+        <button on:click={() => (showForm = 'addLink')} class="btn btn-outline btn-info block mx-auto my-4">
             Add a Link
         </button>
         {/if}
 
-        {#if showEdit}
-            <p>Edit</p>
-            <button on:click={() => showEdit = false} class="btn btn-xs my-4">Cancel</button>
+        {#if showForm === 'edit'}
+            <LinkForm bind:showForm bind:editLinkItem />
         {/if}
     {/if}
 </main>
