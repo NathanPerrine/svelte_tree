@@ -4,27 +4,12 @@
     import SortableList from "$lib/components/SortableList.svelte";
     import UserLink from "$lib/components/UserLink.svelte";
     import { db, userData, user } from "$lib/firebase";
-    import { arrayRemove, arrayUnion, doc, setDoc, updateDoc } from "firebase/firestore";
+    import { arrayRemove, doc, setDoc, updateDoc } from "firebase/firestore";
     import { writable } from "svelte/store";
-    import MingcuteInformationLine from '~icons/mingcute/information-line'
     import LinkForm from "$lib/components/LinkForm.svelte";
-
-    // const icons = ["Twitter", "YouTube", "TikTok", "LinkedIn", "GitHub", "Custom"];
-
-    // const formDefaults = {
-    //     icon: "custom",
-    //     title: "",
-    //     url: "https://"
-    // };
-
-    // const formData = writable(formDefaults);
 
     let showForm: string | boolean = false;
     let editLinkItem: any = null
-
-    // $: urlIsValid = $formData.url.match(/^((https?|ftp|smtp):\/\/)?(www.)?([\w].?)+\.[a-z]+(\/[a-zA-Z0-9#?=]+\/?)*$/);
-    // $: titleIsValid = $formData.title.length < 20 && $formData.title.length > 0;
-    // $: formIsValid = urlIsValid && titleIsValid;
 
     function sortList(e: CustomEvent) {
         const newList = e.detail;
@@ -32,32 +17,9 @@
         setDoc(userRef, { links: newList }, { merge: true });
     }
 
-    // async function addLink(e: SubmitEvent) {
-    //     const userRef = doc(db, "users", $user!.uid)
-
-    //     if (formIsValid){
-    //         await updateDoc(userRef, {
-    //             links: arrayUnion({
-    //                 ...$formData,
-    //                 id: Date.now().toString(),
-    //             }),
-    //         });
-
-    //         formData.set({
-    //             icon: "custom",
-    //             title: "",
-    //             url: "https://",
-    //         });
-
-    //         showForm = false;
-    //     }
-    // }
-
     async function editLink(item: any) {
-        console.log(item, 'editLink --- here')
         editLinkItem = item;
         showForm = 'edit'
-        // console.log(item)
     }
 
     async function deleteLink(item: any) {
@@ -66,11 +28,6 @@
             links: arrayRemove(item),
         });
     }
-
-    // function cancelLink() {
-    //     formData.set(formDefaults);
-    //     showForm = false;
-    // }
 
 </script>
 
@@ -81,88 +38,16 @@
         </h1>
 
         <SortableList list={$userData?.links} on:sort={sortList} let:item let:index>
-            <!-- {console.log(item), ''} -->
             <div class="group relative">
                 <UserLink {...item} />
                 <button on:click={() => deleteLink(item)} class="btn-xs btn-error invisible group-hover:visible transition-all absolute -right-6 bottom-10 rounded">Delete</button>
-                <!-- <button on:click={() => showForm = 'edit'} class ="btn-xs btn-success invisible group-hover:visible transition-all absolute -left-6 bottom-10 rounded">Edit</button> -->
                 <button on:click={() => editLink(item)} class ="btn-xs btn-success invisible group-hover:visible transition-all absolute -left-6 bottom-10 rounded">Edit</button>
             </div>
         </SortableList>
 
         {#if showForm === 'addLink'}
         <LinkForm bind:showForm />
-        <!-- <form
-            on:submit|preventDefault={addLink}
-            class="bg-base-200 p-6 w-full mx-auto rounded-xl"
-        >
-            <div class="flex flex-col space-y-3 md:flex-row md:space-y-0 md:space-x-2">
-                    <select
-                    name="icon"
-                    class="select select-sm"
-                    bind:value={$formData.icon}
-                    >
 
-                    {#each icons as icon}
-                        <option value={icon.toLowerCase()}>{icon}</option>
-                    {/each}
-                    </select>
-
-                    <input
-                    name="title"
-                    type="text"
-                    placeholder="Title"
-                    class="input input-sm"
-                    bind:value={$formData.title}
-                    />
-
-                    <input
-                    name="url"
-                    type="text"
-                    placeholder="URL"
-                    class="input input-sm"
-                    bind:value={$formData.url}
-                    />
-                    <label for="url" class="label justify-end">
-                        <div class="group relative w-max">
-                            <span class='text-info' class:text-success={urlIsValid}>
-                                <MingcuteInformationLine class=' cursor-pointer' />
-                            </span>
-                            <span class="pointer-events-none opacity-0 group-hover:opacity-100">
-                                <div class="text-xs absolute -top-10 -left-52 z-10 w-max bg-base-200 border-solid border-2 border-info p-4 rounded" class:border-success={urlIsValid}>
-                                    <p>URLs must follow the following rules:</p>
-                                    <p>Start with 'http://' or 'https://'</p>
-                                    <p>May include 'www.'</p>
-                                    <p>May have a subdomain</p>
-                                    <p>Must have a second-level domain</p>
-                                    <p>May include a subdomain</p>
-                                    <p>May include a subdirectory</p>
-                                </div>
-
-                            </span>
-                            </div>
-                    </label>
-            </div>
-            <div class="my-4">
-                <div class="swap cursor-default" class:swap-active={formIsValid}>
-                    <div class="swap-on">
-                        <p class="text-success text-xs">Looks good!</p>
-                    </div>
-                    <div class="swap-off">
-                        <p class="text-info text-xs" class:text-success={titleIsValid}> Titles must be between 1 and 20 characters.</p>
-                        <p class="text-info text-xs" class:text-success={urlIsValid}>URL must start with http(s) and follow the format https://www.google.com</p>
-                    </div>
-                </div>
-            </div>
-
-            <button
-            disabled={!formIsValid}
-            type="submit"
-            class="btn btn-success block">Add Link</button
-            >
-
-            <button type="button" class="btn btn-xs my-4" on:click={cancelLink}>Cancel</button>
-        </form> -->
         {:else}
         <button on:click={() => (showForm = 'addLink')} class="btn btn-outline btn-info block mx-auto my-4">
             Add a Link
