@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { db, userData, user } from "$lib/firebase";
-    import { arrayRemove, arrayUnion, doc, setDoc, updateDoc, writeBatch } from "firebase/firestore";
+    import { db, user } from "$lib/firebase";
+    import { arrayRemove, arrayUnion, doc, updateDoc } from "firebase/firestore";
     import { writable } from "svelte/store";
     import MingcuteInformationLine from '~icons/mingcute/information-line'
 
@@ -18,25 +18,11 @@
     export let showForm: string | boolean;
     export let editLinkItem: any = null;
 
-    // let oldLinkItem: any = null;
-
     $: if(showForm ==='edit'){
-
-        // console.log(editLinkItem, 'edit---')
-        // console.log(oldLinkItem, 'before')
-
-        // oldLinkItem = editLinkItem;
-
-        // console.log(oldLinkItem, 'after')
-
-
         setEdit()
-        // formData.set(editLinkItem)
-        // console.log($formData, 'formdata')
     }
 
     function setEdit() {
-        // formData.set(editLinkItem)
         $formData = {...editLinkItem}
     }
 
@@ -58,19 +44,6 @@
             }
 
             if(showForm === 'edit'){
-                // this works for some reason
-                // await updateDoc(userRef, {
-                //     links:  arrayRemove({
-                //         ...$formData
-                //     })
-                // })
-
-
-                // ~~~~~~~~~~ possible issue
-                // removing link item possibly doesn't work because new link does not equal old link
-                // find way to remove old link?
-
-                // console.log(oldLinkItem, 'oldLinkItem')
                 console.log(editLinkItem, 'editLinkItem')
                 console.log($formData, 'formData')
 
@@ -79,17 +52,6 @@
                         ...editLinkItem
                     })
                 })
-
-                // const batch = writeBatch(db)
-                // batch.update(doc(db, "users", $user!.uid), {links: arrayRemove({...$formData})})
-                // batch.update(doc(db, "users", $user!.uid), {links: arrayUnion({...$formData})})
-                // await batch.commit();
-
-                // await updateDoc(userRef, {
-                //     links: arrayUnion({
-                //         ...$formData
-                //     })
-                // })
 
                 await updateDoc(userRef, {
                     links: arrayUnion({
