@@ -72,7 +72,6 @@
         editLinkItem = null
     }
 
-
 </script>
 
 <form on:submit|preventDefault={addLink} class="bg-base-200 p-6 w-full mx-auto rounded-xl">

@@ -5,7 +5,6 @@
     import UserLink from "$lib/components/UserLink.svelte";
     import { db, userData, user } from "$lib/firebase";
     import { arrayRemove, doc, setDoc, updateDoc } from "firebase/firestore";
-    import { writable } from "svelte/store";
     import LinkForm from "$lib/components/LinkForm.svelte";
 
     let showForm: string | boolean = false;
